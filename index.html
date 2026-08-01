@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1b1a17">
+<title>漢字の読み — 大人のための四択ドリル</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>漢</text></svg>">
+</head>
+<body>
+
+<header class="topbar">
+  <h1 class="brand">漢<span>読</span></h1>
+  <button id="btn-stats" class="ghost" type="button">成績</button>
+</header>
+
+<main id="app">
+
+  <!-- ============================ スタート ============================ -->
+  <section id="screen-start" class="screen">
+    <p class="lede">四択で漢字の読みを鍛える、大人のためのドリル。<br>難読語・熟字訓・四字熟語を <strong id="total-count">0</strong> 語収録しています。</p>
+
+    <div class="field">
+      <div class="field-label">出題範囲</div>
+      <div class="chips" id="level-chips" role="group" aria-label="出題範囲">
+        <button type="button" class="chip is-on" data-level="mix">すべて</button>
+        <button type="button" class="chip" data-level="1">初級</button>
+        <button type="button" class="chip" data-level="2">中級</button>
+        <button type="button" class="chip" data-level="3">上級</button>
+      </div>
+      <p class="hint" id="level-note">初級から上級までを混ぜて出題します</p>
+    </div>
+
+    <div class="field">
+      <div class="field-label">問題数</div>
+      <div class="chips" id="count-chips" role="group" aria-label="問題数">
+        <button type="button" class="chip" data-count="5">5問</button>
+        <button type="button" class="chip is-on" data-count="10">10問</button>
+        <button type="button" class="chip" data-count="20">20問</button>
+      </div>
+    </div>
+
+    <label class="toggle">
+      <input type="checkbox" id="opt-weak" checked>
+      <span>間違えた語を優先して出す</span>
+    </label>
+
+    <button id="btn-start" class="primary" type="button">はじめる</button>
+    <p class="hint center">キーボードの <kbd>1</kbd>〜<kbd>4</kbd> で解答、<kbd>Enter</kbd> で次へ</p>
+  </section>
+
+  <!-- ============================== 出題 ============================== -->
+  <section id="screen-quiz" class="screen" hidden>
+    <div class="progress"><div class="progress-bar" id="progress-bar"></div></div>
+    <div class="meta">
+      <span id="q-index">1 / 10</span>
+      <span id="q-level" class="badge">初級</span>
+      <span id="q-score">正解 0</span>
+    </div>
+
+    <div class="word-card">
+      <p class="word" id="q-word">漢字</p>
+    </div>
+
+    <div class="choices" id="choices"></div>
+
+    <div class="verdict" id="verdict" hidden>
+      <p class="verdict-head" id="verdict-head"></p>
+      <p class="verdict-body" id="verdict-body"></p>
+      <button id="btn-next" class="primary" type="button">次へ</button>
+    </div>
+
+    <button id="btn-quit" class="ghost quit" type="button">中断する</button>
+  </section>
+
+  <!-- ============================== 結果 ============================== -->
+  <section id="screen-result" class="screen" hidden>
+    <div class="score-ring" id="score-ring">
+      <span class="score-pct" id="score-pct">0%</span>
+      <span class="score-sub" id="score-sub">0 / 10 問正解</span>
+    </div>
+    <p class="comment" id="result-comment"></p>
+
+    <div id="review-wrap" hidden>
+      <h2 class="section-title">取りこぼした語</h2>
+      <ul class="review" id="review-list"></ul>
+    </div>
+
+    <div class="actions">
+      <button id="btn-retry-wrong" class="primary" type="button" hidden>間違えた語だけ復習</button>
+      <button id="btn-again" class="secondary" type="button">同じ設定でもう一度</button>
+      <button id="btn-home" class="ghost" type="button">最初の画面へ</button>
+    </div>
+  </section>
+
+  <!-- ============================== 成績 ============================== -->
+  <section id="screen-stats" class="screen" hidden>
+    <h2 class="section-title">これまでの成績</h2>
+    <div class="stat-grid">
+      <div class="stat"><span class="stat-num" id="st-answered">0</span><span class="stat-label">解答数</span></div>
+      <div class="stat"><span class="stat-num" id="st-rate">—</span><span class="stat-label">正答率</span></div>
+      <div class="stat"><span class="stat-num" id="st-mastered">0</span><span class="stat-label">習得した語</span></div>
+    </div>
+
+    <h2 class="section-title">苦手な語</h2>
+    <ul class="review" id="weak-list"></ul>
+    <p class="hint center" id="weak-empty" hidden>まだ苦手な語はありません。</p>
+
+    <div class="actions">
+      <button id="btn-stats-back" class="secondary" type="button">戻る</button>
+      <button id="btn-reset" class="ghost" type="button">記録を消去</button>
+    </div>
+  </section>
+
+</main>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
