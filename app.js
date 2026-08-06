@@ -60,9 +60,9 @@ function shuffle(arr) {
 }
 
 function pool() {
-  return state.level === 'mix'
-    ? QUESTIONS
-    : QUESTIONS.filter((q) => q.lv === Number(state.level));
+  if (state.level === 'mix') return QUESTIONS;
+  if (state.level === 'fish') return QUESTIONS.filter((q) => q.cat === 'fish');
+  return QUESTIONS.filter((q) => q.lv === Number(state.level));
 }
 
 /**
@@ -101,7 +101,7 @@ function renderQuestion() {
 
   $('progress-bar').style.width = `${(state.index / state.queue.length) * 100}%`;
   $('q-index').textContent = `${state.index + 1} / ${state.queue.length}`;
-  $('q-level').textContent = LEVELS[q.lv].name;
+  $('q-level').textContent = state.level === 'fish' ? '魚偏' : LEVELS[q.lv].name;
   $('q-score').textContent = `正解 ${state.correct}`;
 
   const word = $('q-word');
@@ -272,9 +272,13 @@ function setup() {
     if (!chip) return;
     state.level = chip.dataset.level;
     pickChip('level-chips', 'level', state.level, () => {
-      $('level-note').textContent = state.level === 'mix'
-        ? '初級から上級までを混ぜて出題します'
-        : `${LEVELS[state.level].note}（${pool().length}語）`;
+      if (state.level === 'mix') {
+        $('level-note').textContent = '初級から上級までを混ぜて出題します';
+      } else if (state.level === 'fish') {
+        $('level-note').textContent = `身近な魚偏の漢字を出題します（${pool().length}語）`;
+      } else {
+        $('level-note').textContent = `${LEVELS[state.level].note}（${pool().length}語）`;
+      }
     });
   });
 
